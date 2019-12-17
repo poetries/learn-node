@@ -1,6 +1,7 @@
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session')
@@ -12,13 +13,26 @@ const blogRouter = require('./routes/blog');
 const userRouter = require('./routes/user');
 
 const app = express();
+const isDev = process.env.NODE_ENV == 'dev'
 
 // 前后端分离 不用管
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
+if(isDev) {
+  app.use(logger('dev'));
+}else {
+  // 线上环境
+  const fileName = path.join(__dirname,'logs','access.log')
+  const writeStream = fs.createWriteStream(fileName,{
+    flags: 'a'
+  })
+  app.use(logger('combined',{
+    stream: writeStream // 把日志通过流写入
+  }));
+}
+
 
 // 这样可以在在req.body中拿到数据
 app.use(express.json()); // content-type="application/json" 获取post data数据
@@ -31,7 +45,7 @@ const sessionStore = new RedisStore({
   client: redisClient
 })
 app.use(session({
-  secret: 'WJLFJFS$@+',
+  secret: 'WJLFJFS$@+', // 随机字符串
   cookie: {
     // path: '/', // 默认配置
     // httpOnly: true, // 默认配置
