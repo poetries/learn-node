@@ -1,7 +1,7 @@
 module.exports = {
     db: {
         host: 'localhost',
-        database: 'vendor',
+        database: 'koa2vue',
         user: 'root',
         password: '12345678'
     },
