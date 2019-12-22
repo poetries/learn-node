@@ -2,6 +2,7 @@
   "name": "blog-koa2",
   "version": "0.1.0",
   "private": true,
+  "main": "app.js",
   "scripts": {
     "start": "node bin/www",
     "dev": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon bin/www",
