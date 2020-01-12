@@ -25,7 +25,7 @@ app.use(require('koa-static')(__dirname + '/public'))
 
 app.use(views(__dirname + '/views', {
   extension: 'ejs'
-}))
+}));
 
 // session 配置 只有使用才会生效
 app.keys = ['USId+dff&*DF9']
